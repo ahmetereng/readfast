@@ -13,22 +13,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle: const TextStyle(color: Colors.black),
+        unselectedLabelStyle: const TextStyle(
+          color: Colors.black,
+        ),
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_rounded,
-                color: Colors.black,
-              ),
-              label: "Home"),
+            icon: Icon(
+              Icons.home_rounded,
+              color: Colors.black,
+            ),
+            label: "Home",
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_sharp,
-                color: Colors.black,
-              ),
-              label: "Profile")
+            icon: Icon(
+              Icons.person_sharp,
+              color: Colors.black,
+            ),
+            label: "Profile",
+          ),
         ],
-        backgroundColor: const Color(0xFFB8B0A0),
+        backgroundColor: const Color(
+          0xFFB8B0A0,
+        ),
       ),
       body: FirstPage(),
     );

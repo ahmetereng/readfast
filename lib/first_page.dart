@@ -56,19 +56,29 @@ class _FirstPageState extends State<FirstPage> {
                       fontSize: 24.sp,
                     ),
                     overlayColor: Colors.black,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(30, 25))),
-                    minimumSize: const Size(300, 60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.elliptical(30.w, 25.h),
+                      ),
+                    ),
+                    minimumSize: const Size(
+                      300,
+                      60,
+                    ),
                   ),
                   child: const Text(
                     '    START!   ',
-                    style: TextStyle(fontSize: 24, color: Colors.black),
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
               IconButton.filled(
-                  onPressed: () {}, icon: const Icon(Icons.settings))
+                onPressed: () {},
+                icon: const Icon(Icons.settings),
+              ),
             ],
           ),
         ),
@@ -77,8 +87,9 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   Future<void> loadTextFile(String nameOfStory) async {
-    final String response =
-        await rootBundle.loadString('assets/data/$nameOfStory.txt');
+    final String response = await rootBundle.loadString(
+      'assets/data/$nameOfStory.txt',
+    );
 
     final fileContent = response
         .replaceAll(".", " ")
@@ -87,9 +98,15 @@ class _FirstPageState extends State<FirstPage> {
         .replaceAll("-", "- ")
         .replaceAll("\n", "")
         .split(" ")
-        .where((a) => a != "")
+        .where(
+          (a) => a != "",
+        )
         .toList();
-    Navigator.pushNamed(context, "/start", arguments: fileContent);
+    Navigator.pushNamed(
+      context,
+      "/start",
+      arguments: fileContent,
+    );
   }
 }
 
@@ -101,7 +118,10 @@ getCoverImage(
 }
 
 class FirstPageState extends ChangeNotifier {
-  List storyNames = ["clown", "gallipoli"];
+  List storyNames = [
+    "clown",
+    "gallipoli",
+  ];
   static String selectedStoryName = "clown";
 
   void selectStoryName(int index) {
