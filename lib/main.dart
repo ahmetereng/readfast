@@ -3,10 +3,16 @@ import 'package:readfast/home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readfast/started.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsBinding binding = WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  runApp(
+    const ReadFastApp(),
+  );
+}
+
+class ReadFastApp extends StatelessWidget {
+  const ReadFastApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +21,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Material App',
         routes: {
           "/start": (context) => const Read(),
-        },
+        }, //TODO GoRouter or GetX navigation
         home: const HomePage(),
       ),
     );

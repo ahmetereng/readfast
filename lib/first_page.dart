@@ -3,78 +3,58 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FirstPage extends StatefulWidget {
-  const FirstPage({super.key});
+  FirstPage({super.key});
+  final List images = FirstPageState()
+      .storyNames
+      .map(
+        (e) => "assets/images/covers/$e.png",
+      )
+      .toList();
 
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
-  static int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    List images = Story.storyNames
-        .map(
-          (e) => "assets/images/covers/$e.png",
-        )
-        .toList();
-
     return Column(
       children: [
-        Stack(
-          children: [
-            Image.asset(getCoverImage(selectedIndex, images)),
-            Positioned(
-              top: 200.h,
-              left: 5,
-              child: IconButton.filled(
-                  iconSize: 20,
-                  onPressed: () {
-                    setState(() {
-                      if (selectedIndex != 0) {
-                        selectedIndex--;
-                        Story().selectStoryName(selectedIndex);
-                      } else {
-                        selectedIndex = 1;
-                        Story().selectStoryName(selectedIndex);
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-            ),
-            Positioned(
-              top: 200.h,
-              right: 5,
-              child: IconButton.filled(
-                  iconSize: 20,
-                  onPressed: () {
-                    setState(() {
-                      if (selectedIndex == images.length - 1) {
-                        selectedIndex = 0;
-                        Story().selectStoryName(selectedIndex);
-                      } else {
-                        selectedIndex++;
-                        Story().selectStoryName(selectedIndex);
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios_rounded)),
-            )
-          ],
+        SizedBox(
+          height: 400.h,
+          child: PageView(
+            children: [
+              Image.asset(
+                widget.images[0],
+              ),
+              Image.asset(
+                widget.images[1],
+              ),
+            ],
+          ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 30),
+          padding: EdgeInsets.only(top: 30.h),
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(50, 0, 5, 0),
+                padding: EdgeInsets.fromLTRB(
+                  50.w,
+                  0.h,
+                  5.w,
+                  0,
+                ),
                 child: ElevatedButton(
                   onPressed: () {
-                    loadTextFile(Story.selectedStoryName);
+                    loadTextFile(
+                      FirstPageState.selectedStoryName,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFDDDCDB),
-                    textStyle: const TextStyle(fontSize: 24),
+                    textStyle: TextStyle(
+                      fontSize: 24.sp,
+                    ),
                     overlayColor: Colors.black,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -113,21 +93,23 @@ class _FirstPageState extends State<FirstPage> {
   }
 }
 
-getCoverImage(int index, List images) {
+getCoverImage(
+  int index,
+  List images,
+) {
   return images[index];
 }
 
-class Story extends ChangeNotifier {
-  static List storyNames = ["clown", "gallipoli"];
+class FirstPageState extends ChangeNotifier {
+  List storyNames = ["clown", "gallipoli"];
   static String selectedStoryName = "clown";
 
   void selectStoryName(int index) {
+    //TODO according to pageController change the storyname (pageController,changeNotifier,listeners,)
     if (index == 0) {
       selectedStoryName = "clown";
-      notifyListeners();
     } else {
       selectedStoryName = "gallipoli";
-      notifyListeners();
     }
   }
 }

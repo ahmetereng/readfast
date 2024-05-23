@@ -16,7 +16,7 @@ class Read extends StatefulWidget {
 class _ReadState extends State<Read> {
   /* _ReadState({required this.nameOfStory}); */
 
-  String nameOfStory = Story.selectedStoryName;
+  String nameOfStory = FirstPageState.selectedStoryName;
   late Timer timer;
   int reader = 0;
   List<String> contentName = [];
