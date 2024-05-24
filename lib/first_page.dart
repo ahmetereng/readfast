@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,6 +24,7 @@ class FirstPage extends StatefulWidget {
         (e) => Image.asset("assets/images/covers/$e.png"),
       )
       .toList();
+  final PageController pageController = PageController();
 
   @override
   State<FirstPage> createState() => _FirstPageState();
@@ -30,14 +32,56 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   @override
+  void initState() {
+    widget.pageController.addListener(
+      () {
+        if ((widget.pageController.page ?? 0) <= 1 &&
+            0 <= (widget.pageController.page ?? 0)) {
+          widget.pages = [
+            ...widget.immutablePages,
+            ...widget.pages,
+          ];
+        } else if ((widget.pageController.page ?? 0) <=
+                widget.pages.length - 1 &&
+            widget.pages.length - 2 <= (widget.pageController.page ?? 0)) {
+          widget.pages = [
+            ...widget.pages,
+            ...widget.immutablePages,
+          ];
+        }
+      },
+    );
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if ((widget.pageController.page ?? 0) <= 1 &&
+          0 <= (widget.pageController.page ?? 0)) {
+        print("giriyor");
+        widget.pages = [
+          ...widget.immutablePages,
+          ...widget.pages,
+        ];
+        print(widget.pages);
+      } else if ((widget.pageController.page ?? 0) <= widget.pages.length - 1 &&
+          widget.pages.length - 2 <= (widget.pageController.page ?? 0)) {
+        widget.pages = [
+          ...widget.pages,
+          ...widget.immutablePages,
+        ];
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    widget.pages.insert(0, widget.pages.last);
     return Column(
       children: [
         SizedBox(
           height: 400.h,
           child: PageView.builder(
-            itemBuilder: cycledPageView,
+            controller: widget.pageController,
+            itemBuilder: (context, index) {
+              return widget.pages[index];
+            },
           ),
         ),
         Padding(
@@ -95,9 +139,15 @@ class _FirstPageState extends State<FirstPage> {
 
   Widget cycledPageView(BuildContext context, int index) {
     if (index == 0) {
-      widget.pages.addAll(widget.immutablePages);
+      widget.pages = [
+        ...widget.immutablePages,
+        ...widget.pages,
+      ];
     } else if (index == widget.pages.length - 1) {
-      widget.pages.addAll(widget.immutablePages);
+      widget.pages = [
+        ...widget.pages,
+        ...widget.immutablePages,
+      ];
     }
 
     return widget.pages[index];
@@ -142,7 +192,7 @@ class FirstPageState extends ChangeNotifier {
   static String selectedStoryName = "clown";
 
   void selectStoryName(int index) {
-    //TODO according to pageController change the storyname (pageController,changeNotifier,listeners,)
+    //TODO according to pageController change the selectedStoryName (pageController,changeNotifier,listeners,)
     if (index == 0) {
       selectedStoryName = "clown";
     } else {
