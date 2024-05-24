@@ -4,24 +4,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FirstPage extends StatefulWidget {
   FirstPage({super.key});
-  final List images = FirstPageState()
-      .storyNames
-      .map(
-        (e) => "assets/images/covers/$e.png",
-      )
-      .toList();
-  final List<Image> pages = FirstPageState()
+  // final List images = FirstPageState()
+  //     .storyNames
+  //     .map(
+  //       (e) => "assets/images/covers/$e.png",
+  //     )
+  //     .toList();
+  final List<Image> immutablePages = FirstPageState()
       .storyNames
       .map(
         (e) => Image.asset("assets/images/covers/$e.png"),
       )
       .toList();
+
+  List<Image> pages = FirstPageState()
+      .storyNames
+      .map(
+        (e) => Image.asset("assets/images/covers/$e.png"),
+      )
+      .toList();
+
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
-  
   @override
   Widget build(BuildContext context) {
     widget.pages.insert(0, widget.pages.last);
@@ -30,9 +37,6 @@ class _FirstPageState extends State<FirstPage> {
         SizedBox(
           height: 400.h,
           child: PageView.builder(
-            controller: PageController(
-              initialPage: 1,
-            ),
             itemBuilder: cycledPageView,
           ),
         ),
@@ -90,20 +94,10 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   Widget cycledPageView(BuildContext context, int index) {
-    
-
-    int pageLengthMinusTwo = widget.pages.length - 2;
-    
     if (index == 0) {
-      print("merhaba");
-      widget.pages.insert(0, widget.pages[pageLengthMinusTwo]);
-      widget.pages.removeLast();
-      index++;
-    } else if (index == 2) {
-      print("merhabadiyoz");
-      widget.pages.add(widget.pages[0]);
-      widget.pages.removeAt(0);
-      index--;
+      widget.pages.addAll(widget.immutablePages);
+    } else if (index == widget.pages.length - 1) {
+      widget.pages.addAll(widget.immutablePages);
     }
 
     return widget.pages[index];
