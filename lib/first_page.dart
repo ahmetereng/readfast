@@ -10,27 +10,30 @@ class FirstPage extends StatefulWidget {
         (e) => "assets/images/covers/$e.png",
       )
       .toList();
-
+  final List<Image> pages = FirstPageState()
+      .storyNames
+      .map(
+        (e) => Image.asset("assets/images/covers/$e.png"),
+      )
+      .toList();
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
+  
   @override
   Widget build(BuildContext context) {
+    widget.pages.insert(0, widget.pages.last);
     return Column(
       children: [
         SizedBox(
           height: 400.h,
-          child: PageView(
-            children: [
-              Image.asset(
-                widget.images[0],
-              ),
-              Image.asset(
-                widget.images[1],
-              ),
-            ],
+          child: PageView.builder(
+            controller: PageController(
+              initialPage: 1,
+            ),
+            itemBuilder: cycledPageView,
           ),
         ),
         Padding(
@@ -84,6 +87,26 @@ class _FirstPageState extends State<FirstPage> {
         ),
       ],
     );
+  }
+
+  Widget cycledPageView(BuildContext context, int index) {
+    
+
+    int pageLengthMinusTwo = widget.pages.length - 2;
+    
+    if (index == 0) {
+      print("merhaba");
+      widget.pages.insert(0, widget.pages[pageLengthMinusTwo]);
+      widget.pages.removeLast();
+      index++;
+    } else if (index == 2) {
+      print("merhabadiyoz");
+      widget.pages.add(widget.pages[0]);
+      widget.pages.removeAt(0);
+      index--;
+    }
+
+    return widget.pages[index];
   }
 
   Future<void> loadTextFile(String nameOfStory) async {
