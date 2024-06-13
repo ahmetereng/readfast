@@ -4,18 +4,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FirstPage extends StatefulWidget {
   FirstPage({super.key});
-  final List images = FirstPageState()
-      .storyNames
+  List storyNames = [
+    "clown",
+    "gallipoli",
+  ];
+  var selectedStoryName = "clown";
+
+  List get images => storyNames
       .map(
         (e) => "assets/images/covers/$e.png",
       )
       .toList();
-
+  final PageController _pageController = PageController();
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
+  @override
+  void initState() {
+    widget._pageController.addListener(
+      () {
+        if (widget._pageController.page! % 1 == 0) {
+          widget.selectedStoryName =
+              widget.storyNames[widget._pageController.page!.toInt()];
+        }
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,6 +41,7 @@ class _FirstPageState extends State<FirstPage> {
         SizedBox(
           height: 400.h,
           child: PageView(
+            controller: widget._pageController,
             children: [
               Image.asset(
                 widget.images[0],
@@ -46,9 +65,7 @@ class _FirstPageState extends State<FirstPage> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    loadTextFile(
-                      FirstPageState.selectedStoryName,
-                    );
+                    loadTextFile(widget.selectedStoryName);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFDDDCDB),
@@ -115,21 +132,4 @@ getCoverImage(
   List images,
 ) {
   return images[index];
-}
-
-class FirstPageState extends ChangeNotifier {
-  List storyNames = [
-    "clown",
-    "gallipoli",
-  ];
-  static String selectedStoryName = "clown";
-
-  void selectStoryName(int index) {
-    //TODO according to pageController change the storyname (pageController,changeNotifier,listeners,)
-    if (index == 0) {
-      selectedStoryName = "clown";
-    } else {
-      selectedStoryName = "gallipoli";
-    }
-  }
 }

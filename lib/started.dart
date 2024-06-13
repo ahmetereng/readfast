@@ -1,13 +1,13 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:readfast/first_page.dart';
 
 class Read extends StatefulWidget {
-  const Read({super.key});
+  late Timer timer;
+  int reader = 0;
+  List<String> contentName = [];
+  int start = 0;
+  Read({super.key});
 
   @override
   State<Read> createState() => _ReadState();
@@ -16,20 +16,16 @@ class Read extends StatefulWidget {
 class _ReadState extends State<Read> {
   /* _ReadState({required this.nameOfStory}); */
 
-  String nameOfStory = FirstPageState.selectedStoryName;
-  late Timer timer;
-  int reader = 0;
-  List<String> contentName = [];
-  int start = 0;
+  
 
   void startTimer() async {
-    start = contentName.length;
-    print(start);
-    timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+    widget.start = widget.contentName.length;
+    print(widget.start);
+    widget.timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
-        if (start > 1) {
-          start--;
-          reader++;
+        if (widget.start > 1) {
+          widget.start--;
+          widget.reader++;
         } else {
           timer.cancel();
         }
@@ -45,16 +41,16 @@ class _ReadState extends State<Read> {
 
   @override
   void dispose() {
-    timer.cancel();
+    widget.timer.cancel();
     super.dispose();
-    reader = 0;
+    widget.reader = 0;
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    contentName = ModalRoute.of(context)!.settings.arguments as List<String>;
+    widget.contentName = ModalRoute.of(context)!.settings.arguments as List<String>;
     startTimer();
   }
 
@@ -63,11 +59,11 @@ class _ReadState extends State<Read> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: contentName.isEmpty
+        child: widget.contentName.isEmpty
             ? const SizedBox(
                 height: 100, width: 100, child: CircularProgressIndicator())
             : Text(
-                contentName[reader],
+                widget.contentName[widget.reader],
                 style: const TextStyle(fontSize: 50),
               ),
       ),

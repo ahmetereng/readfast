@@ -25,7 +25,8 @@ class ReadFastApp extends StatelessWidget {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          "/start": (context) => const Read(),
+          "/start": (context) => 
+           Read(),
         }, //TODO GoRouter or GetX navigation
         home: const HomePage(),
       ),
