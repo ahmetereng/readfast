@@ -20,7 +20,6 @@ class _ReadState extends State<Read> {
 
   void startTimer() async {
     widget.start = widget.contentName.length;
-    print(widget.start);
     widget.timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       setState(() {
         if (widget.start > 1) {
