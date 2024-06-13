@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ignore: must_be_immutable
 class FirstPage extends StatefulWidget {
   FirstPage({super.key});
-  List storyNames = [
+  final List storyNames = [
     "clown",
     "gallipoli",
   ];
-  var selectedStoryName = "clown";
-
+  String selectedStoryName = "clown";
   List get images => storyNames
       .map(
         (e) => Image.asset("assets/images/covers/$e.png"),
@@ -31,6 +30,11 @@ class _FirstPageState extends State<FirstPage> {
       },
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -102,22 +106,6 @@ class _FirstPageState extends State<FirstPage> {
     );
   }
 
-  Widget cycledPageView(BuildContext context, int index) {
-    if (index == 0) {
-      widget.pages = [
-        ...widget.immutablePages,
-        ...widget.pages,
-      ];
-    } else if (index == widget.pages.length - 1) {
-      widget.pages = [
-        ...widget.pages,
-        ...widget.immutablePages,
-      ];
-    }
-
-    return widget.pages[index];
-  }
-
   Future<void> loadTextFile(String nameOfStory) async {
     final String response = await rootBundle.loadString(
       'assets/data/$nameOfStory.txt',
@@ -135,6 +123,7 @@ class _FirstPageState extends State<FirstPage> {
         )
         .toList();
     Navigator.pushNamed(
+      // ignore: use_build_context_synchronously
       context,
       "/start",
       arguments: fileContent,
