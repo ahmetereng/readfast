@@ -25,10 +25,8 @@ class _FirstPageState extends State<FirstPage> {
   void initState() {
     widget._pageController.addListener(
       () {
-        if (widget._pageController.page! % 1 == 0) {
-          widget.selectedStoryName =
-              widget.storyNames[widget._pageController.page!.toInt()];
-        }
+        widget.selectedStoryName =
+            widget.storyNames[widget._pageController.page!.round().toInt()];
       },
     );
     super.initState();
