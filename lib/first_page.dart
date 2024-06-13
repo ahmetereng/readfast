@@ -5,17 +5,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: must_be_immutable
 class FirstPage extends StatefulWidget {
   FirstPage({super.key});
+
   final List storyNames = [
     "clown",
     "gallipoli",
   ];
+
   String selectedStoryName = "clown";
+
   List get images => storyNames
       .map(
-        (e) => Image.asset("assets/images/covers/$e.png"),
+        (e) => "assets/images/covers/$e.png",
       )
       .toList();
+
   final PageController _pageController = PageController();
+
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
